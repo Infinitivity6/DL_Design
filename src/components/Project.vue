@@ -1,3 +1,4 @@
+<!-- 默认的选择文件上传和参数设置界面 -->
 <template>
   <div class="container text-center">
     <h2>{{ projectType }} 项目</h2>
@@ -63,6 +64,7 @@ export default {
     trainModel() {
       alert('Training Model...');
       // Add actual training logic here
+      // 实际训练模型逻辑处理
     }
   }
 };
@@ -70,7 +72,7 @@ export default {
 
 <style scoped>
 
-/* 删除类别按钮变得更大一点，更好看一点 */
+/* 删除类别按钮尺寸 */
 .large-btn{
   width: 120px;    
   font-size: 1.25rem;  

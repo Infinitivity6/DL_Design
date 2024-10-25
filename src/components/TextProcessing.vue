@@ -1,37 +1,62 @@
-<!-- 文字项目的选择文件上传和参数设置界面 -->
 <template>
-    <div class="text-processing-container">
-      <h2>文字处理任务</h2>
+    <div class="container">
+      <h2 class="text-center my-5">文字处理任务</h2>
   
-      <!-- 选择任务类型 -->
-      <div>
-        <label for="task-type">选择任务类型:</label>
-        <select id="task-type" v-model="taskType">
-          <option value="text-classification">文本分类</option>
-          <option value="ner">命名实体识别</option>
-        </select>
+      <!-- 任务类型选择 -->
+      <div class="row mb-4">
+        <div class="col-md-6 offset-md-3">
+          <label for="task-type">选择任务类型:</label>
+          <select id="task-type" v-model="taskType" class="form-control">
+            <option value="text-classification">文本分类</option>
+            <option value="ner">命名实体识别</option>
+          </select>
+        </div>
       </div>
   
-      <!-- 上传训练集、验证集、测试集 -->
-      <div>
-        <label for="train-file">上传训练集:</label>
-        <input type="file" id="train-file" @change="uploadTrainFile">
-  
-        <label for="val-file">上传验证集:</label>
-        <input type="file" id="val-file" @change="uploadValFile">
-  
-        <label for="test-file">上传测试集:</label>
-        <input type="file" id="test-file" @change="uploadTestFile">
+      <!-- 文件上传 -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <label for="train-file">上传训练集:</label>
+          <input type="file" id="train-file" class="form-control" @change="uploadTrainFile">
+        </div>
+        <div class="col-md-4">
+          <label for="val-file">上传验证集:</label>
+          <input type="file" id="val-file" class="form-control" @change="uploadValFile">
+        </div>
+        <div class="col-md-4">
+          <label for="test-file">上传测试集:</label>
+          <input type="file" id="test-file" class="form-control" @change="uploadTestFile">
+        </div>
       </div>
   
-      <!-- 选择使用模型 -->
-      <div>
-        <label for="model-selection">选择使用模型:</label>
-        <select id="model-selection" v-model="selectedModel">
-          <option value="bert">BERT</option>
-          <option value="gpt">GPT</option>
-          <option value="lstm">LSTM</option>
-        </select>
+      <!-- 模型选择 -->
+      <div class="row mb-4">
+        <div class="col-md-6 offset-md-3">
+          <label for="model-selection">选择使用模型:</label>
+          <select id="model-selection" v-model="selectedModel" class="form-control">
+            <option value="bert">BERT</option>
+            <option value="gpt">GPT</option>
+            <option value="lstm">LSTM</option>
+          </select>
+        </div>
+      </div>
+  
+      <!-- 训练参数设置 -->
+      <div class="training-params my-5">
+        <h4>设置训练参数</h4>
+        <div class="form-group">
+          <label>Epochs:</label>
+          <input type="number" class="form-control" v-model="epochs" />
+        </div>
+        <div class="form-group">
+          <label>Batch Size:</label>
+          <input type="number" class="form-control" v-model="batchSize" />
+        </div>
+        <div class="form-group">
+          <label>Learning Rate:</label>
+          <input type="number" step="0.001" class="form-control" v-model="learningRate" />
+        </div>
+        <button class="btn btn-success btn-lg mt-3" @click="trainModel">训练模型</button>
       </div>
     </div>
   </template>
@@ -42,6 +67,9 @@
       return {
         taskType: 'text-classification', // 默认任务类型
         selectedModel: 'bert', // 默认模型
+        epochs: 50, // 默认 epochs
+        batchSize: 16, // 默认 batch size
+        learningRate: 0.001, // 默认 learning rate
       };
     },
     methods: {
@@ -56,14 +84,41 @@
       uploadTestFile(event) {
         const file = event.target.files[0];
         console.log('Test File:', file);
+      },
+      trainModel() {
+        alert('开始训练模型...');
+        // 添加训练逻辑
       }
     }
   }
   </script>
   
   <style scoped>
-  .text-processing-container {
+  .container {
     padding: 20px;
+    max-width: 800px;
+  }
+  
+  .form-control {
+    margin-bottom: 15px;
+  }
+  
+  .training-params {
+    margin-top: 40px;
+  }
+  
+  .btn-lg {
+    width: 100%;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  h4 {
+    margin-top: 30px;
+    font-weight: bold;
   }
   </style>
   
