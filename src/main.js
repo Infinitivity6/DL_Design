@@ -8,9 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 // 引入 Bootstrap 的 JS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap/dist/js/bootstrap.bundle'; // 包含 Popper 和 Bootstrap JS
+// 引入艺术字体
 import '@fortawesome/fontawesome-free/css/all.css';
 
 createApp(App)

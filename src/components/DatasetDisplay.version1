@@ -1,0 +1,59 @@
+<template>
+    <div class="container">
+      <h2 class="text-center my-5">数据集展示</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th v-for="(column, index) in columns" :key="index">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
+            <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- 数据标准化按钮 -->
+      <div class="text-center">
+        <button class="btn btn-primary" @click="normalizeData">数据标准化</button>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        columns: ['列1', '列2', '列3'], // 假设有三列
+        rows: [
+          ['数据1', '数据2', '数据3'],
+          ['数据4', '数据5', '数据6'],
+          // 更多数据行...
+        ]
+      };
+    },
+    methods: {
+      normalizeData() {
+        alert('数据标准化功能待实现');
+        // 在这里实现数据标准化的逻辑
+      }
+    }
+  };
+  </script>
+  
+  <style scoped>
+  .container {
+    padding: 20px;
+    max-width: 1000px;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  </style>
+  

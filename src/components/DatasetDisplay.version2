@@ -1,0 +1,214 @@
+<template>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center my-3">
+        <h2>数据集展示</h2>
+
+      <!-- 数据集展示和统计下拉菜单 -->
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="datasetDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          选择数据集
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="datasetDropdown">
+          <li><a class="dropdown-item" @click="selectDataset('train')">训练集</a></li>
+          <li><a class="dropdown-item" @click="selectDataset('validation')">验证集</a></li>
+          <li><a class="dropdown-item" @click="selectDataset('test')">测试集</a></li>
+          <li><a class="dropdown-item" @click="selectDataset('all')">所有数据</a></li>
+        </ul>
+      </div>
+    </div>
+
+      <!-- 数据集表格展示 -->
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th v-for="(column, index) in columns" :key="index">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
+            <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 10.30新开发 多种数据预处理按钮组 -->
+    <div class="text-center my-4">
+      <button class="btn btn-warning mx-2" @click="removeDuplicates">去除重复值</button>
+      <button class="btn btn-info mx-2" @click="fillMissingValues">缺失值填充</button>
+      <button class="btn btn-success mx-2" @click="balanceData">数据平衡</button>
+    </div>
+  
+      <!-- 数据统计图展示 -->
+      <div class="charts-container mt-5">
+        <h4 class="text-center">数据统计图</h4>
+  
+        <!-- 扇形图 -->
+        <div class="chart-placeholder">
+          <h5>扇形图</h5>
+          <div id="pieChart" class="chart"></div>
+        </div>
+  
+        <!-- 条形图 -->
+        <div class="chart-placeholder mt-4">
+          <h5>条形图</h5>
+          <div id="barChart" class="chart"></div>
+        </div>
+      </div>
+
+      <!-- 数据标准化按钮 -->
+      <div class="text-center">
+        <button class="btn btn-primary" @click="normalizeData">数据标准化</button>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import * as echarts from 'echarts';
+  
+  export default {
+    data() {
+      return {
+        columns: ['列1', '列2', '列3'], // 假设有三列
+        rows: [
+          ['数据1', '数据2', '数据3'],
+          ['数据4', '数据5', '数据6'],
+          // 更多数据行...
+        ],
+        isNormalized: false // 数据是否经过标准化
+      };
+    },
+    methods: {
+      initializeCharts() {
+        // 初始化扇形图
+        this.pieChart = echarts.init(document.getElementById('pieChart'));
+        const pieOption = {
+          title: {
+            text: '类别分布',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          series: [
+            {
+              name: '数据量',
+              type: 'pie',
+              radius: '50%',
+              data: [
+                { value: 10, name: '类别1' },
+                { value: 20, name: '类别2' },
+                { value: 30, name: '类别3' }
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        };
+        this.pieChart.setOption(pieOption);
+  
+        // 初始化条形图
+        this.barChart = echarts.init(document.getElementById('barChart'));
+        const barOption = {
+          title: {
+            text: '类别数据量',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' }
+          },
+          xAxis: {
+            type: 'category',
+            data: ['类别1', '类别2', '类别3']
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [
+            {
+              data: [10, 20, 30],
+              type: 'bar',
+              itemStyle: {
+                color: '#4f81bd'
+              }
+            }
+          ]
+        };
+        this.barChart.setOption(barOption);
+      },
+      normalizeData() {
+        this.isNormalized = true;
+        alert('数据标准化后图表展示');
+        
+        // 更新图表数据为标准化后的数据（此处使用占位数据）
+        this.pieChart.setOption({
+          series: [{
+            data: [
+              { value: 15, name: '类别1' },
+              { value: 25, name: '类别2' },
+              { value: 35, name: '类别3' }
+            ]
+          }]
+        });
+  
+        this.barChart.setOption({
+          series: [{
+            data: [15, 25, 35]
+          }]
+        });
+      }
+    },
+    mounted() {
+      this.initializeCharts();
+    }
+  };
+  </script>
+  
+  <style scoped>
+  .container {
+    padding: 20px;
+    max-width: 1000px;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  
+  .charts-container {
+    margin-top: 40px;
+  }
+  
+  .chart-placeholder {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart-placeholder h5 {
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .chart {
+    width: 100%;
+    height: 400px; /* 设置图表高度 */
+  }
+  </style>
+  

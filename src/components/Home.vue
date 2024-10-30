@@ -44,7 +44,7 @@
         </div>
   
         <!-- 图片项目 -->
-        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToProject('图片')">
+        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToProject('image-processing')">
           <div class="card-img-container">
             <img src="../assets/img/index_cards/pic/sample1.jpg" class="sample-img" alt="Image Sample 1">
             <img src="../assets/img/index_cards/pic/sample2.jpg" class="sample-img" alt="Image Sample 2">
@@ -57,7 +57,7 @@
         </div>
   
         <!-- 视频项目 -->
-        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToProject('视频')">
+        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToProject('video-processing')">
           <div class="card-img-container">
             <img src="../assets/img/index_cards/video/sample1.jpg" class="sample-img" alt="Video Sample 1">
             <img src="../assets/img/index_cards/video/sample2.jpg" class="sample-img" alt="Video Sample 2">
@@ -181,6 +181,7 @@
 
   .container {
     padding: 100px;
+    margin-top: 0;
   }
   
 

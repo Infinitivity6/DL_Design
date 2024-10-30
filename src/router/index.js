@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from '../components/Home.vue';
 import ProjectComponent from '../components/Project.vue';
 import TextProcessing from '@/components/TextProcessing.vue';
+import DatasetDisplay from '@/components/DatasetDisplay.vue';
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/text-processing',
     name: 'TextProcessing',
     component: TextProcessing
+  },
+  {
+    path: '/dataset-display',
+    name: 'DatasetDisplay',
+    component: DatasetDisplay
   }
 ];
 
