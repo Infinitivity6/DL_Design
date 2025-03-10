@@ -21,15 +21,18 @@
           <div class="row mb-4">
             <div class="col-md-4">
               <label for="train-file">上传训练集:</label>
-              <input type="file" id="train-file" class="form-control" @change="uploadTrainFile">
+              <input type="file" id="train-file" class="form-control" @change="onTrainFileChange">
+              <button class="btn btn-primary mt-2" @click="uploadTrainFile">上传训练集</button>
             </div>
             <div class="col-md-4">
               <label for="val-file">上传验证集:</label>
-              <input type="file" id="val-file" class="form-control" @change="uploadValFile">
+              <input type="file" id="val-file" class="form-control" @change="onValFileChange">
+              <button class="btn btn-primary mt-2" @click="uploadValFile">上传验证集</button>
             </div>
             <div class="col-md-4">
               <label for="test-file">上传测试集:</label>
-              <input type="file" id="test-file" class="form-control" @change="uploadTestFile">
+              <input type="file" id="test-file" class="form-control" @change="onTestFileChange">
+              <button class="btn btn-primary mt-2" @click="uploadTestFile">上传测试集</button>
             </div>
           </div>
 
@@ -96,6 +99,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -104,22 +108,88 @@ export default {
       epochs: 50,
       batchSize: 16,
       learningRate: 0.001,
-      selectedMetrics: 'accuracy' // 默认评价指标
+      selectedMetrics: 'accuracy', // 默认评价指标
+
+      // 新增：用于存储用户选择的三个文件
+      trainFile: null,
+      valFile: null,
+      testFile: null
     };
   },
   methods: {
-    uploadTrainFile(event) {
-      const file = event.target.files[0];
-      console.log('Train File:', file);
+    //选择文件（训练集，验证集，测试集）
+    onTrainFileChange(event) {
+      this.trainFile = event.target.files[0];
+      console.log('Train File selected:', this.trainFile);
     },
-    uploadValFile(event) {
-      const file = event.target.files[0];
-      console.log('Validation File:', file);
+    onValFileChange(event) {
+      this.valFile = event.target.files[0];
+      console.log('Val File selected:', this.valFile);
     },
-    uploadTestFile(event) {
-      const file = event.target.files[0];
-      console.log('Test File:', file);
+    onTestFileChange(event) {
+      this.testFile = event.target.files[0];
+      console.log('Test File selected:', this.testFile);
     },
+    //确认上传选择的文件（训练集，验证集，测试集）
+    uploadTrainFile() {
+      if (!this.trainFile) {
+        alert("请先选择训练集文件");
+        return;
+      }
+      const formData = new FormData();
+      formData.append('dataset_type', 'train');
+      formData.append('file', this.trainFile);
+
+      // 这里使用后端URL，如 '/data/upload' 或 'http://127.0.0.1:5000/data/upload'
+      axios.post('/api/data/upload', formData)
+        .then(res => {
+          alert(res.data.message);
+        })
+        .catch(err => {
+          console.error(err);
+          alert('上传训练集失败');
+        });
+    },
+
+    uploadValFile() {
+      if (!this.valFile) {
+        alert("请先选择验证集文件");
+        return;
+      }
+      const formData = new FormData();
+      formData.append('dataset_type', 'validation');
+      formData.append('file', this.valFile);
+
+      axios.post('/api/data/upload', formData)
+        .then(res => {
+          alert(res.data.message);
+        })
+        .catch(err => {
+          console.error(err);
+          alert('上传验证集失败');
+        });
+    },
+
+    uploadTestFile() {
+      if (!this.testFile) {
+        alert("请先选择测试集文件");
+        return;
+      }
+      const formData = new FormData();
+      formData.append('dataset_type', 'test');
+      formData.append('file', this.testFile);
+
+      axios.post('/api/data/upload', formData)
+        .then(res => {
+          alert(res.data.message);
+        })
+        .catch(err => {
+          console.error(err);
+          alert('上传测试集失败');
+        });
+    },
+
+   
     trainModel() {
       alert(`开始训练模型，使用的评价指标为：${this.selectedMetrics}`);
       // 在此处实现模型训练逻辑，并将 selectedMetrics 发送给后端
