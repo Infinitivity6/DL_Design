@@ -1,4 +1,5 @@
 # routes/dataDisplay_routes.py
+# 该文件的主要作用是响应前端对于数据展示的请求
 
 from flask import Blueprint, request, jsonify
 from services.dataDisplay import get_dataset_info

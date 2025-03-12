@@ -1,4 +1,5 @@
 # services/dataDisplay.py
+# 该文件的主要作用是执行数据展示的操作，并返回给后端业务逻辑层，并由其将结果传送至前端渲染
 
 import os
 import pandas as pd
