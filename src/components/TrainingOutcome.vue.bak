@@ -1,0 +1,353 @@
+<template>
+    <div class="container my-5">
+      <!-- 页面标题 -->
+      <div class="text-center mb-4">
+        <h1>训练过程与结果展示</h1>
+        <p class="text-muted"></p>
+      </div>
+  
+      <!-- 1. 训练信息/参数区域 -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">训练信息</h4>
+        </div>
+        <div class="card-body row">
+          <div class="col-md-3">
+            <label>模型名称:</label>
+            <div class="fw-bold">{{ modelName }}</div>
+          </div>
+          <div class="col-md-3">
+            <label>Epoch 数:</label>
+            <div class="fw-bold">{{ trainingConfig.epochs }}</div>
+          </div>
+          <div class="col-md-3">
+            <label>Batch Size:</label>
+            <div class="fw-bold">{{ trainingConfig.batchSize }}</div>
+          </div>
+          <div class="col-md-3">
+            <label>学习率:</label>
+            <div class="fw-bold">{{ trainingConfig.learningRate }}</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- 2. 训练进度/日志 -->
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h4 class="mb-0">训练进度</h4>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="me-2">当前进度:</label>
+            <span>{{ currentEpoch }}/{{ trainingConfig.epochs }} epoch</span>
+          </div>
+  
+          <!-- 进度条 -->
+          <div class="progress mb-3" style="height: 24px;">
+            <div
+              class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+              role="progressbar"
+              :style="{ width: progressBarWidth }"
+            >
+              {{ progressBarWidth }}
+            </div>
+          </div>
+  
+          <!-- 模拟日志输出 -->
+          <label>实时日志 / 控制台输出:</label>
+          <div
+            class="border p-3 bg-light"
+            style="max-height: 200px; overflow-y: auto; font-family: monospace;"
+          >
+            <div v-for="(line, index) in trainingLogs" :key="index">
+              {{ line }}
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- 3. 训练可视化图表 -->
+      <div class="row">
+        <!-- 损失曲线 -->
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header bg-info text-white">
+              <h5 class="mb-0">损失曲线 (Loss Curve)</h5>
+            </div>
+            <div class="card-body">
+              <div id="lossChart" style="width: 100%; height: 300px;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- 准确率曲线 -->
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header bg-info text-white">
+              <h5 class="mb-0">准确率曲线 (Accuracy)</h5>
+            </div>
+            <div class="card-body">
+              <div id="accChart" style="width: 100%; height: 300px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- 混淆矩阵 + 柱状图 (示例) -->
+      <div class="row">
+        <!-- 混淆矩阵 -->
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header bg-warning">
+              <h5 class="mb-0">混淆矩阵 (Confusion Matrix)</h5>
+            </div>
+            <div class="card-body">
+              <div id="cmChart" style="width: 100%; height: 300px;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- 柱状图：类别分布 或 Precision/Recall -->
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header bg-warning">
+              <h5 class="mb-0">精确率 / 召回率 (示例柱状图)</h5>
+            </div>
+            <div class="card-body">
+              <div id="barChart" style="width: 100%; height: 300px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- 4. 评估指标 -->
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">最终评估指标</h4>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered text-center">
+            <thead class="table-light">
+              <tr>
+                <th>Accuracy</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1-Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ finalMetrics.accuracy.toFixed(3) }}</td>
+                <td>{{ finalMetrics.precision.toFixed(3) }}</td>
+                <td>{{ finalMetrics.recall.toFixed(3) }}</td>
+                <td>{{ finalMetrics.f1score.toFixed(3) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+    </div>
+  </template>
+  
+  <script>
+  import * as echarts from 'echarts';
+  
+  export default {
+    name: 'TrainingDashboard',
+    data() {
+      return {
+        // 模拟一些基础信息
+        modelName: 'CNN_Classifier',
+        trainingConfig: {
+          epochs: 20,
+          batchSize: 32,
+          learningRate: 0.001
+        },
+        currentEpoch: 8, // 当前epoch进度(示例)
+        trainingLogs: [
+          '[Epoch 1] loss=2.345, acc=0.45',
+          '[Epoch 2] loss=2.122, acc=0.50',
+          '[Epoch 3] loss=1.880, acc=0.57',
+          '[Epoch 4] loss=1.650, acc=0.61',
+          '[Epoch 5] loss=1.500, acc=0.66',
+          '[Epoch 6] loss=1.320, acc=0.68',
+          '[Epoch 7] loss=1.200, acc=0.70',
+          '[Epoch 8] loss=1.110, acc=0.73'
+        ],
+        finalMetrics: {
+          accuracy: 0.85,
+          precision: 0.80,
+          recall: 0.78,
+          f1score: 0.79
+        },
+  
+        // 损失曲线/准确率曲线用模拟数据
+        lossData: [2.3, 2.12, 1.88, 1.65, 1.5, 1.32, 1.2, 1.11, 1.0, 0.95],
+        accData:  [0.45,0.50,0.57,0.61,0.66,0.68,0.70,0.73,0.75,0.78],
+  
+        // 混淆矩阵(示例2x2)
+        confusionMatrix: [
+          [40, 10],
+          [ 8, 42]
+        ],
+        // 柱状图(精确率/召回率) 示例
+        classLabels: ['Class0', 'Class1'],
+        precisionData: [0.78, 0.82],
+        recallData: [0.80, 0.76]
+      };
+    },
+    computed: {
+      // 进度条宽度
+      progressBarWidth() {
+        let ratio = (this.currentEpoch / this.trainingConfig.epochs) * 100;
+        return ratio.toFixed(1) + '%';
+      }
+    },
+    mounted() {
+      this.initLossChart();
+      this.initAccChart();
+      this.initCMChart();
+      this.initBarChart();
+    },
+    methods: {
+      // 初始化损失曲线
+      initLossChart() {
+        const chartDom = document.getElementById('lossChart');
+        const myChart = echarts.init(chartDom);
+        const option = {
+          xAxis: { type: 'category', data: this.lossData.map((_, i) => 'Epoch ' + (i+1)) },
+          yAxis: { type: 'value' },
+          tooltip: { trigger: 'axis' },
+          series: [
+            {
+              name: 'Loss',
+              data: this.lossData,
+              type: 'line',
+              smooth: true,
+              lineStyle: { color: '#f56c6c' }
+            }
+          ],
+          title: { text: '损失曲线', left: 'center' }
+        };
+        myChart.setOption(option);
+      },
+  
+      // 初始化准确率曲线
+      initAccChart() {
+        const chartDom = document.getElementById('accChart');
+        const myChart = echarts.init(chartDom);
+        const option = {
+          xAxis: { type: 'category', data: this.accData.map((_, i) => 'Epoch ' + (i+1)) },
+          yAxis: { type: 'value', min: 0, max: 1 },
+          tooltip: { trigger: 'axis' },
+          series: [
+            {
+              name: 'Accuracy',
+              data: this.accData,
+              type: 'line',
+              smooth: true,
+              lineStyle: { color: '#67c23a' }
+            }
+          ],
+          title: { text: '准确率曲线', left: 'center' }
+        };
+        myChart.setOption(option);
+      },
+  
+      // 初始化混淆矩阵
+      initCMChart() {
+        const chartDom = document.getElementById('cmChart');
+        const myChart = echarts.init(chartDom);
+  
+        // 将confusionMatrix 转换为 heatmap data
+        let heatmapData = [];
+        for (let i = 0; i < this.confusionMatrix.length; i++) {
+          for (let j = 0; j < this.confusionMatrix[i].length; j++) {
+            heatmapData.push([j, i, this.confusionMatrix[i][j]]);
+          }
+        }
+  
+        const option = {
+          tooltip: { position: 'top' },
+          xAxis: {
+            type: 'category',
+            data: this.classLabels
+          },
+          yAxis: {
+            type: 'category',
+            data: this.classLabels.reverse() // Y轴从上到下
+          },
+          visualMap: {
+            min: 0,
+            max: 50,
+            calculable: true,
+            orient: 'horizontal',
+            left: 'center',
+            bottom: '0%'
+          },
+          series: [
+            {
+              name: 'ConfusionMatrix',
+              type: 'heatmap',
+              data: heatmapData,
+              label: { show: true },
+              emphasis: { itemStyle: { shadowBlur: 5 } }
+            }
+          ],
+          title: { text: '混淆矩阵', left: 'center' }
+        };
+  
+        myChart.setOption(option);
+      },
+  
+      // 初始化柱状图 (Precision / Recall)
+      initBarChart() {
+        const chartDom = document.getElementById('barChart');
+        const myChart = echarts.init(chartDom);
+  
+        const option = {
+          tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+          xAxis: { type: 'category', data: this.classLabels },
+          yAxis: { type: 'value', min: 0, max: 1 },
+          legend: { data: ['Precision', 'Recall'] },
+          series: [
+            {
+              name: 'Precision',
+              type: 'bar',
+              data: this.precisionData,
+              itemStyle: { color: '#409EFF' }
+            },
+            {
+              name: 'Recall',
+              type: 'bar',
+              data: this.recallData,
+              itemStyle: { color: '#E6A23C' }
+            }
+          ],
+          title: { text: '精确率/召回率', left: 'center' }
+        };
+  
+        myChart.setOption(option);
+      }
+    }
+  };
+  </script>
+  
+  <style scoped>
+  /* 仅作演示，实际可结合 Bootstrap/ElementUI 等框架进行更丰富的样式 */
+  
+  /* 调整卡片间距 */
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  /* 标题区微调 */
+  .card-header h5, .card-header h4 {
+    margin: 0;
+  }
+  
+  /* 表格文字居中示例 */
+  .table th, .table td {
+    vertical-align: middle !important;
+  }
+  </style>
+  

@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from '../components/Home.vue';
-import ProjectComponent from '../components/Project.vue';
 import TextProcessing from '@/components/TextProcessing.vue';
 import DatasetDisplay from '@/components/DatasetDisplay.vue';
+import TrainingOutcome_ClassificationNum from '@/components/TrainingOutcome_ClassificationNum.vue';
+import ClassificationNumData from '../components/ClassificationNumData.vue';
 
 const routes = [
   {
@@ -11,12 +12,19 @@ const routes = [
     component: HomeComponent,
     meta: {title: '首页'}
   },
+
   {
-    path: '/project/:type',
-    name: 'Project',
-    component: ProjectComponent,
-    props: true, // 允许路由参数作为 props 传递给组件
-    meta: {title: '项目'}
+    path: '/training-outcome-classification-num',
+    name: 'TrainingOutcome_ClassificationNum',
+    component: TrainingOutcome_ClassificationNum,
+    meta: {title: '数值分类训练结果'}
+  },
+
+  {
+    path: '/num-data-processing-classification',
+    name: 'ClassificationNumData',
+    component: ClassificationNumData,
+    meta: {title: '数值文本分类处理'}
   },
   {
     path: '/text-processing',

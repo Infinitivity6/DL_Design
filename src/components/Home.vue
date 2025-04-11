@@ -20,6 +20,9 @@
         <li @click="chooseFunction('data_generation')">
           <img src="../assets/img/index_menubar/data_generation.png" alt="数据生=生成图标">数据生成
         </li>
+        <li @click="chooseFunction('data_generation')">
+          <img src="../assets/img/index_menubar/entity_recognition.png" alt="数据生=生成图标">命名实体识别
+        </li>
         <!-- 其他任务类型 -->
       </ul>
     </div>
@@ -39,7 +42,7 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">文字项目</h5>
-            <p class="card-text">基于文字进行训练，可以上传文本文件或输入文字。</p>
+            <p class="card-text">基于文字进行训练，可以上传含有标签的规范文本数据文件进行文本分类。目前支持对中文/英文进行分类。</p>
           </div>
         </div>
   
@@ -56,16 +59,16 @@
           </div>
         </div>
   
-        <!-- 视频项目 -->
-        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToProject('video-processing')">
+        <!-- 纯数值项目 -->
+        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToNumProject()">
           <div class="card-img-container">
-            <img src="../assets/img/index_cards/video/sample1.jpg" class="sample-img" alt="Video Sample 1">
-            <img src="../assets/img/index_cards/video/sample2.jpg" class="sample-img" alt="Video Sample 2">
-            <img src="../assets/img/index_cards/video/sample3.jpg" class="sample-img" alt="Video Sample 3">
+            <img src="../assets/img/index_cards/num/sample1.png" class="sample-img" alt="Video Sample 1">
+            <img src="../assets/img/index_cards/num/sample2.png" class="sample-img" alt="Video Sample 2">
+            <img src="../assets/img/index_cards/num/sample3.png" class="sample-img" alt="Video Sample 3">
           </div>
           <div class="card-body">
-            <h5 class="card-title">视频项目</h5>
-            <p class="card-text">基于视频进行训练，支持上传视频文件或使用摄像头录制视频。</p>
+            <h5 class="card-title">数值项目</h5>
+            <p class="card-text">基于纯数值数据进行分类训练，支持对含有多个属性，纯数值，且含有标签的数据进行模型训练。</p>
           </div>
         </div>
        
@@ -89,8 +92,8 @@
         console.log("这里功能是选择功能");
         //功能选择逻辑
       },
-      goToProject(type) {
-        this.$router.push({ name: 'Project', params: { type } });
+      goToNumProject() {
+        this.$router.push({ name: 'ClassificationNumData' });
       },
       goToTextProcessing(){
         this.$router.push({ name: 'TextProcessing' });

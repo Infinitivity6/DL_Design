@@ -240,6 +240,7 @@
         <button class="btn btn-info mx-2" @click="fillMissingValues">缺失值填充</button>
         <button class="btn btn-success mx-2" @click="balanceData">数据平衡</button>
         <button class="btn btn-primary mx-2" @click="normalizeData">数据标准化</button>
+        <button class="btn btn-primary mx-2" @click="test">测试</button>
       </div>
   
      
@@ -472,6 +473,10 @@
       };
     },
     methods: {
+      test(){
+      this.$router.push({ name: 'TrainingOutcome' });
+ 
+      },
       // 缺失值填充相关函数
       onMethodChange(ds, cell, event) {
         const method = event.target.value; // "mean"/"interpolation"/"specific"

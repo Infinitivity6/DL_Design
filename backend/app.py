@@ -2,6 +2,8 @@
 # 注册所有业务并规定基本配置信息
 
 import os
+import time
+import threading
 from flask import Flask
 from flask_cors import CORS
 from routes.dataUpload_routes import data_bp
@@ -10,6 +12,22 @@ from routes.dataDeduplication_routes import data_deduplication_bp
 from routes.dataFill_routes import data_fill_bp
 from routes.dataBalance_routes import data_balance_bp
 from routes.dataNormalization_routes import data_normalization_bp
+from routes.classification_num_train_routes import classification_num_bp
+
+
+# 用于存储任务状态的字典
+task_status = {}
+
+def train_task(task_id, model_choice, epochs, batch_size, learning_rate, eval_metric):
+    """
+    异步执行训练任务
+    """
+    result = train_model(model_choice, epochs, batch_size, learning_rate, eval_metric)
+    task_status[task_id] = {
+        'status': 'completed',
+        'result': result,
+    }
+
 
 def create_app():
     app = Flask(__name__)
@@ -42,6 +60,9 @@ def create_app():
 
     # 注册数据预处理_数据标准化功能
     app.register_blueprint(data_normalization_bp, url_prefix='/api/dataPreprocess')
+
+    # 注册数值分类功能的模型功能
+    app.register_blueprint(classification_num_bp, url_prefix='/api/classification')
 
 
     

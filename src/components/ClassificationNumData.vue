@@ -1,21 +1,13 @@
+<!-- ClassificationNumData.vue -->
 <template>
   <div class="background-wrapper">
     <div class="container">
       <div class="card shadow-sm mb-5">
         <div class="card-header text-white text-center">
-          <h2>文字处理任务</h2>
+          <h2>数值数据分类任务</h2>
         </div>
         <div class="card-body">
-          <!-- 任务类型选择 -->
-          <div class="row mb-4">
-            <div class="col-md-6 offset-md-3">
-              <label for="task-type">选择语言:</label>
-              <select id="task-type" v-model="taskType" class="form-control">
-                <option value="text-classification">中文</option>
-                <option value="ner">英文</option>
-              </select>
-            </div>
-          </div>
+
 
           <!-- 文件上传 -->
           <div class="row mb-4">
@@ -50,9 +42,9 @@
             <div class="col-md-6 offset-md-3">
               <label for="model-selection">选择使用模型:</label>
               <select id="model-selection" v-model="selectedModel" class="form-control">
-                <option value="bert">BERT</option>
-                <option value="gpt">GPT</option>
-                <option value="lstm">LSTM</option>
+                <option value="MLP">MLP</option>
+                <option value="TabNet">TabNet</option>
+                <option value="CNN1D">CNN 1D</option>
               </select>
             </div>
           </div>
@@ -87,7 +79,7 @@
               </select>
             </div>
 
-              <button class="btn btn-success btn-lg mt-3 w-100" @click="trainModel">
+              <button class="btn btn-success btn-lg mt-3 w-100" @click="startTraining">
                 <i class="fas fa-play"></i> 训练模型
               </button>
             </div>
@@ -103,8 +95,8 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      taskType: 'text-classification',
-      selectedModel: 'bert',
+      taskType: 'num-classification',
+      selectedModel: 'MLP',
       epochs: 50,
       batchSize: 16,
       learningRate: 0.001,
@@ -190,13 +182,40 @@ export default {
     },
 
    
-    trainModel() {
-      alert(`开始训练模型，使用的评价指标为：${this.selectedMetrics}`);
-      // 在此处实现模型训练逻辑，并将 selectedMetrics 发送给后端
-    },
+    
     viewDataset() {
       this.$router.push({ name: 'DatasetDisplay' });
-    }
+    },
+    startTraining() {
+      const payload = {
+        model_choice: this.selectedModel,  // 例如 "MLP"
+        epochs: this.epochs,
+        batch_size: this.batchSize,
+        learning_rate: this.learningRate,
+        eval_metric: this.selectedMetrics
+      };
+
+      // 启动训练请求，获取任务ID
+      axios.post('/api/classification/num', payload, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {
+        const taskId = response.data.task_id;  // 获取任务ID
+        // 跳转到训练结果页面，并传递任务ID
+        this.$router.push({
+          name: 'TrainingOutcome_ClassificationNum',  // 跳转到结果页面
+          query: { taskId: taskId }
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        alert("启动训练任务失败：" + (err.response?.data?.message || "未知错误"));
+      });
+    },
+
+
   }
 }
 </script>
