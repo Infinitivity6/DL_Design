@@ -1,3 +1,4 @@
+# backend/services/models/classification/Num/MLP.py
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,6 +9,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 import os
 import time
+from services.task_manager import TaskManager
 
 # 定义简单的 MLP 分类器
 class MLPClassifier(nn.Module):
@@ -79,7 +81,7 @@ if torch.cuda.is_available():
 else:
     print("使用设备: CPU")
 
-def train_mlp(csv_file, epochs=50, batch_size=16, learning_rate=0.001, eval_metric="accuracy", task_id=None):
+def train_mlp(csv_file, epochs=50, batch_size=16, learning_rate=0.001, eval_metric="accuracy", task_id=None, task_manager=None):
     # 创建日志文件，保存训练日志
     current_time = time.strftime("%Y%m%d-%H%M%S", time.localtime())
     log_filename = f"traininglogs/{task_id}_{current_time}_mlp.log"
@@ -152,13 +154,24 @@ def train_mlp(csv_file, epochs=50, batch_size=16, learning_rate=0.001, eval_metr
         # 记录每个 epoch 的损失和评估指标
         log_file.write(f"Epoch {epoch}: Loss={epoch_loss:.4f}, {eval_metric.capitalize()}={epoch_metric:.4f}\n")
         print(f"[MLP] Epoch {epoch}: Loss={epoch_loss:.4f}, {eval_metric.capitalize()}={epoch_metric:.4f}")
+
+        # 更新 task_status 中的 training_logs
+        task_manager.update_task(task_id, {'training_logs': logs})
     
     log_file.close()  # 关闭日志文件
     
     return {
         "model": "MLP",
         "epochs": epochs,
-        "final_metric": logs[-1]["metric"],
-        "training_logs": logs,
+        "batch_size": batch_size,
+        "learning_rate": learning_rate,
+        "eval_metric": eval_metric,
+        "final_metric": logs[-1]["metric"],  # 最终评估指标
+        "training_logs": logs,  # 训练日志
+        "final_accuracy": logs[-1]["metric"],  # 或者其他字段用于保存最终的准确率
+        "status": "completed",  # 新增任务完成标志
         "message": "MLP训练完成"
-    }
+}
+
+
+

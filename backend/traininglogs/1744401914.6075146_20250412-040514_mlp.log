@@ -1,0 +1,17 @@
+Model: MLP
+Epochs: 12
+Batch Size: 16
+Learning Rate: 0.001
+Evaluation Metric: accuracy
+Epoch 0: Loss=0.5171, Accuracy=0.7563
+Epoch 1: Loss=0.4756, Accuracy=0.7798
+Epoch 2: Loss=0.4667, Accuracy=0.7838
+Epoch 3: Loss=0.4636, Accuracy=0.7877
+Epoch 4: Loss=0.4610, Accuracy=0.7880
+Epoch 5: Loss=0.4597, Accuracy=0.7898
+Epoch 6: Loss=0.4579, Accuracy=0.7893
+Epoch 7: Loss=0.4571, Accuracy=0.7917
+Epoch 8: Loss=0.4554, Accuracy=0.7918
+Epoch 9: Loss=0.4553, Accuracy=0.7901
+Epoch 10: Loss=0.4535, Accuracy=0.7929
+Epoch 11: Loss=0.4528, Accuracy=0.7907

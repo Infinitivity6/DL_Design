@@ -34,11 +34,11 @@
     data() {
       return {
         // 从路由 query 参数中获取
-        selectedModel: this.$route.query.model_choice || "MLP",
-        epochs: parseInt(this.$route.query.epochs) || 50,
-        batchSize: parseInt(this.$route.query.batch_size) || 16,
-        learningRate: parseFloat(this.$route.query.learning_rate) || 0.001,
-        evalMetric: this.$route.query.eval_metric || "accuracy",
+        selectedModel: "MLP",
+        epochs: 50,
+        batchSize: 16,
+        learningRate: 0.001,
+        evalMetric: "accuracy",
         trainingLogs: [],
         finalAccuracy: 0,
         timer: null  // 用于定时轮询
@@ -49,10 +49,35 @@
             axios.get(`/api/classification/status/${taskId}`)
             .then(res => {
                 const data = res.data;
+                console.log("从后端收到的数据：", data);
+
+                // 确保从后端接收到正确的状态字段
+                if (!data.status) {
+                console.error("返回数据中没有 status 字段");
+                return;
+                }
+
+
+                // 获取训练参数并更新界面
+                this.selectedModel = data.model || this.selectedModel;
+                this.epochs = data.epochs || this.epochs;
+                this.batchSize = data.batch_size || this.batchSize;
+                this.learningRate = data.learning_rate || this.learningRate;
+                this.evalMetric = data.eval_metric || this.evalMetric;
+
+                // 获取训练日志和最终准确率
                 this.trainingLogs = data.training_logs;
                 this.finalAccuracy = data.final_accuracy;
+
+                // 渲染训练过程日志图表
                 this.renderTrainingLogChart();
                 this.renderResultChart();
+
+                // 如果任务已完成，停止轮询
+                if (data.status === "completed") {
+                    console.log("训练完成，停止轮询...");
+                    clearInterval(this.timer);  // 停止轮询
+                }
             })
             .catch(err => {
                 console.error(err);
@@ -97,7 +122,7 @@
               radius: '50%',
               data: [
                 { value: this.finalAccuracy, name: '准确率' },
-                { value: (1 - this.finalAccuracy).toFixed(4), name: '其余' }
+                { value: (1 - this.finalAccuracy).toFixed(4), name: '不准确率' }
               ],
               emphasis: {
                 itemStyle: {
@@ -110,7 +135,7 @@
           ]
         }
         myChart.setOption(option)
-      }
+      },
     },
     mounted() {
         // 从路由中获取任务ID

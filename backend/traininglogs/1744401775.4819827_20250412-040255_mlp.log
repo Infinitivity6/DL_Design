@@ -1,0 +1,55 @@
+Model: MLP
+Epochs: 50
+Batch Size: 16
+Learning Rate: 0.001
+Evaluation Metric: accuracy
+Epoch 0: Loss=0.5242, Accuracy=0.7448
+Epoch 1: Loss=0.4755, Accuracy=0.7778
+Epoch 2: Loss=0.4668, Accuracy=0.7854
+Epoch 3: Loss=0.4639, Accuracy=0.7848
+Epoch 4: Loss=0.4618, Accuracy=0.7863
+Epoch 5: Loss=0.4603, Accuracy=0.7917
+Epoch 6: Loss=0.4596, Accuracy=0.7887
+Epoch 7: Loss=0.4579, Accuracy=0.7900
+Epoch 8: Loss=0.4574, Accuracy=0.7896
+Epoch 9: Loss=0.4562, Accuracy=0.7903
+Epoch 10: Loss=0.4543, Accuracy=0.7898
+Epoch 11: Loss=0.4549, Accuracy=0.7909
+Epoch 12: Loss=0.4534, Accuracy=0.7899
+Epoch 13: Loss=0.4530, Accuracy=0.7919
+Epoch 14: Loss=0.4514, Accuracy=0.7927
+Epoch 15: Loss=0.4508, Accuracy=0.7929
+Epoch 16: Loss=0.4504, Accuracy=0.7926
+Epoch 17: Loss=0.4503, Accuracy=0.7959
+Epoch 18: Loss=0.4490, Accuracy=0.7942
+Epoch 19: Loss=0.4490, Accuracy=0.7955
+Epoch 20: Loss=0.4484, Accuracy=0.7949
+Epoch 21: Loss=0.4468, Accuracy=0.7943
+Epoch 22: Loss=0.4467, Accuracy=0.7966
+Epoch 23: Loss=0.4464, Accuracy=0.7944
+Epoch 24: Loss=0.4454, Accuracy=0.7949
+Epoch 25: Loss=0.4466, Accuracy=0.7937
+Epoch 26: Loss=0.4454, Accuracy=0.7956
+Epoch 27: Loss=0.4454, Accuracy=0.7956
+Epoch 28: Loss=0.4446, Accuracy=0.7965
+Epoch 29: Loss=0.4449, Accuracy=0.7959
+Epoch 30: Loss=0.4442, Accuracy=0.7966
+Epoch 31: Loss=0.4443, Accuracy=0.7941
+Epoch 32: Loss=0.4433, Accuracy=0.7950
+Epoch 33: Loss=0.4435, Accuracy=0.7950
+Epoch 34: Loss=0.4435, Accuracy=0.7973
+Epoch 35: Loss=0.4430, Accuracy=0.7960
+Epoch 36: Loss=0.4421, Accuracy=0.7986
+Epoch 37: Loss=0.4422, Accuracy=0.7963
+Epoch 38: Loss=0.4416, Accuracy=0.7948
+Epoch 39: Loss=0.4410, Accuracy=0.7954
+Epoch 40: Loss=0.4428, Accuracy=0.7955
+Epoch 41: Loss=0.4420, Accuracy=0.7958
+Epoch 42: Loss=0.4418, Accuracy=0.7973
+Epoch 43: Loss=0.4415, Accuracy=0.7962
+Epoch 44: Loss=0.4413, Accuracy=0.7964
+Epoch 45: Loss=0.4410, Accuracy=0.7982
+Epoch 46: Loss=0.4406, Accuracy=0.7985
+Epoch 47: Loss=0.4397, Accuracy=0.7975
+Epoch 48: Loss=0.4396, Accuracy=0.7976
+Epoch 49: Loss=0.4398, Accuracy=0.7967
