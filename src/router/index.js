@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from '../components/Home.vue';
-import TextProcessing from '@/components/TextProcessing.vue';
 import DatasetDisplay from '@/components/DatasetDisplay.vue';
 import TrainingOutcome_ClassificationNum from '@/components/TrainingOutcome_ClassificationNum.vue';
 import ClassificationNumData from '../components/ClassificationNumData.vue';
 import ClassificationImageData from '@/components/ClassificationImageData.vue';
 import TrainingOutCome_ClassificationImage from '@/components/TrainingOutCome_ClassificationImage.vue';
+import ClassificationTextData from '@/components/ClassificationTextData.vue';
+import TrainingOutCome_ClassificationText from '@/components/TrainingOutCome_ClassificationText.vue';
 
 const routes = [
   {
@@ -27,6 +28,13 @@ const routes = [
     component: TrainingOutCome_ClassificationImage,
     meta: {title: '图像分类训练结果'}
   },
+  {
+    path: '/training-outcome-classification-text',
+    name: 'TrainingOutcome_ClassificationText',
+    component: TrainingOutCome_ClassificationText,
+    meta: {title: '文字分类训练结果'}
+  },
+
 
   {
     path: '/num-data-processing-classification',
@@ -41,10 +49,10 @@ const routes = [
     meta: {title: '图像分类处理'}
   },
   {
-    path: '/text-processing',
-    name: 'TextProcessing',
-    component: TextProcessing,
-    meta: {title: '文本处理'}
+    path: '/text-data-processing-classification',
+    name: 'ClassificationTextData',
+    component: ClassificationTextData,
+    meta: {title: '文本分类处理'}
   },
   {
     path: '/dataset-display',

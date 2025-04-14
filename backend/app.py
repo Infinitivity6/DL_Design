@@ -15,6 +15,8 @@ from routes.dataNormalization_routes import data_normalization_bp
 from routes.classification_num_train_routes import classification_num_bp
 from routes.classification_image_upload_routes import image_upload_bp
 from routes.classification_image_train_routes import classification_image_bp
+from routes.classification_text_upload_routes import classification_text_upload_bp
+from routes.classification_text_train_routes import classification_text_bp
 
 
 # 用于存储任务状态的字典
@@ -74,8 +76,14 @@ def create_app():
     # 注册图像上传的功能
     app.register_blueprint(image_upload_bp, url_prefix='/api/image')
 
-    # 注册图像上传的功能
+    # 注册图像分类的功能
     app.register_blueprint(classification_image_bp, url_prefix='/api/classification')
+
+    # 注册文本上传的功能
+    app.register_blueprint(classification_text_upload_bp, url_prefix='/api/classification/text/upload')
+
+    # 注册文本分类的功能
+    app.register_blueprint(classification_text_bp, url_prefix='/api/classification')
 
 
 

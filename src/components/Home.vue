@@ -42,7 +42,7 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">文字项目</h5>
-            <p class="card-text">基于文字进行训练，可以上传含有标签的规范文本数据文件进行文本分类。目前支持对中文/英文进行分类。</p>
+            <p class="card-text">基于文字进行训练，可以上传含有标签的文本数据文件进行文本分类。目前支持对中文/英文进行分类。</p>
           </div>
         </div>
   
@@ -93,7 +93,7 @@
         //功能选择逻辑
       },
       goToClassificationTextProcessing(){
-        this.$router.push({ name: 'TextProcessing' });
+        this.$router.push({ name: 'ClassificationTextData' });
       },
       goToClassificationImageProject() {
         this.$router.push({ name: 'ClassificationImageData' });
