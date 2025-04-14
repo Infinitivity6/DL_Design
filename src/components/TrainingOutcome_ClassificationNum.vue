@@ -91,7 +91,9 @@
         const myChart = echarts.init(chartDom)
         const epochs = this.trainingLogs.map(log => log.epoch)
         const losses = this.trainingLogs.map(log => log.loss)
-        const accuracies = this.trainingLogs.map(log => log.accuracy)
+        // const accuracies = this.trainingLogs.map(log => log.accuracy)
+        const metrics = this.trainingLogs.map(log => log.metric)
+
         const option = {
           title: { text: '训练过程日志', left: 'center' },
           tooltip: { trigger: 'axis' },
@@ -103,7 +105,7 @@
           ],
           series: [
             { name: 'Loss', type: 'line', data: losses },
-            { name: 'Accuracy', type: 'line', yAxisIndex: 1, data: accuracies }
+            { name: 'Accuracy', type: 'line', yAxisIndex: 1, data: metrics }
           ]
         }
         myChart.setOption(option)

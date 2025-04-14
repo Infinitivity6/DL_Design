@@ -34,7 +34,7 @@
       <div class="d-flex justify-content-center flex-wrap">
   
         <!-- 文字项目 -->
-        <div class="card m-3" style="width: 21rem; height: 21rem;" @click="goToTextProcessing()">
+        <div class="card m-3" style="width: 21rem; height: 21rem;" @click="goToClassificationTextProcessing()">
           <div class="card-img-container">
             <img src="../assets/img/index_cards/text/sample1.png" class="sample-img" alt="Text Sample 1">
             <img src="../assets/img/index_cards/text/sample2.png" class="sample-img" alt="Text Sample 2">
@@ -47,7 +47,7 @@
         </div>
   
         <!-- 图片项目 -->
-        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToProject('image-processing')">
+        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToClassificationImageProject()">
           <div class="card-img-container">
             <img src="../assets/img/index_cards/pic/sample1.jpg" class="sample-img" alt="Image Sample 1">
             <img src="../assets/img/index_cards/pic/sample2.jpg" class="sample-img" alt="Image Sample 2">
@@ -55,12 +55,12 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">图片项目</h5>
-            <p class="card-text">基于图片进行训练，支持文件上传或使用你的摄像头。</p>
+            <p class="card-text">基于图片进行训练，上传多个类别的图片训练自己的模型。</p>
           </div>
         </div>
   
         <!-- 纯数值项目 -->
-        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToNumProject()">
+        <div class="card m-3" style="width: 21rem; height: 21rem" @click="goToClassificationNumProject()">
           <div class="card-img-container">
             <img src="../assets/img/index_cards/num/sample1.png" class="sample-img" alt="Video Sample 1">
             <img src="../assets/img/index_cards/num/sample2.png" class="sample-img" alt="Video Sample 2">
@@ -92,12 +92,16 @@
         console.log("这里功能是选择功能");
         //功能选择逻辑
       },
-      goToNumProject() {
+      goToClassificationTextProcessing(){
+        this.$router.push({ name: 'TextProcessing' });
+      },
+      goToClassificationImageProject() {
+        this.$router.push({ name: 'ClassificationImageData' });
+      },
+      goToClassificationNumProject() {
         this.$router.push({ name: 'ClassificationNumData' });
       },
-      goToTextProcessing(){
-        this.$router.push({ name: 'TextProcessing' });
-      }
+      
 
     }
   }

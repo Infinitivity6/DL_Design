@@ -13,6 +13,8 @@ from routes.dataFill_routes import data_fill_bp
 from routes.dataBalance_routes import data_balance_bp
 from routes.dataNormalization_routes import data_normalization_bp
 from routes.classification_num_train_routes import classification_num_bp
+from routes.classification_image_upload_routes import image_upload_bp
+from routes.classification_image_train_routes import classification_image_bp
 
 
 # 用于存储任务状态的字典
@@ -40,6 +42,11 @@ def create_app():
     if not os.path.exists(upload_folder):
         os.makedirs(upload_folder)
 
+    # 确保图像分类的上传目录存在
+    image_upload_folder = os.path.join(upload_folder, 'classification', 'Image')
+    if not os.path.exists(image_upload_folder):
+        os.makedirs(image_upload_folder)
+
     app.config['UPLOAD_FOLDER'] = upload_folder
     app.config['PREPROCESSED_FOLDER'] = preprocessed_folder
 
@@ -63,6 +70,14 @@ def create_app():
 
     # 注册数值分类功能的模型功能
     app.register_blueprint(classification_num_bp, url_prefix='/api/classification')
+
+    # 注册图像上传的功能
+    app.register_blueprint(image_upload_bp, url_prefix='/api/image')
+
+    # 注册图像上传的功能
+    app.register_blueprint(classification_image_bp, url_prefix='/api/classification')
+
+
 
 
     

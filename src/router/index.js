@@ -4,6 +4,8 @@ import TextProcessing from '@/components/TextProcessing.vue';
 import DatasetDisplay from '@/components/DatasetDisplay.vue';
 import TrainingOutcome_ClassificationNum from '@/components/TrainingOutcome_ClassificationNum.vue';
 import ClassificationNumData from '../components/ClassificationNumData.vue';
+import ClassificationImageData from '@/components/ClassificationImageData.vue';
+import TrainingOutCome_ClassificationImage from '@/components/TrainingOutCome_ClassificationImage.vue';
 
 const routes = [
   {
@@ -19,12 +21,24 @@ const routes = [
     component: TrainingOutcome_ClassificationNum,
     meta: {title: '数值分类训练结果'}
   },
+  {
+    path: '/training-outcome-classification-image',
+    name: 'TrainingOutcome_ClassificationImage',
+    component: TrainingOutCome_ClassificationImage,
+    meta: {title: '图像分类训练结果'}
+  },
 
   {
     path: '/num-data-processing-classification',
     name: 'ClassificationNumData',
     component: ClassificationNumData,
-    meta: {title: '数值文本分类处理'}
+    meta: {title: '数值项目分类处理'}
+  },
+  {
+    path: '/image-data-processing-classification',
+    name: 'ClassificationImageData',
+    component: ClassificationImageData,
+    meta: {title: '图像分类处理'}
   },
   {
     path: '/text-processing',
